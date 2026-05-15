@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bar Rank — Turn Customers Into Competitors</title>
-<meta name="description" content="Bar Rank is the competitive loyalty platform for bars and restaurants. Live leaderboards, skill-based challenges, and SMS engagement that drive repeat visits.">
+<meta name="description" content="Bar Rank is the competitive loyalty platform for bars and restaurants. Live leaderboards, skill-based challenges, and engagement that drives repeat visits.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
@@ -12,7 +12,6 @@
   --gold: #F0A500;
   --gold2: #ffc233;
   --gold-dim: rgba(240,165,0,0.08);
-  --gold-glow: rgba(240,165,0,0.18);
   --dark: #070604;
   --dark2: #0d0b08;
   --card: #111009;
@@ -20,7 +19,7 @@
   --border: rgba(240,165,0,0.11);
   --border2: rgba(255,255,255,0.06);
   --text: #ede8dc;
-  --muted: #6b6659;
+  --muted: #c8c3b8;
   --green: #3ecf8e;
   --red: #f04040;
 }
@@ -35,30 +34,41 @@ body {
   overflow-x: hidden;
 }
 
-/* ── CURSOR ── */
-.cursor { position:fixed; width:10px; height:10px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .15s,height .15s; mix-blend-mode:screen; }
-.cursor-trail { position:fixed; width:32px; height:32px; border:1px solid rgba(240,165,0,.35); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:transform .08s linear; }
-
 /* ── NAV ── */
 nav {
   position: fixed; top:0; left:0; right:0; z-index:500;
   display:flex; align-items:center; justify-content:space-between;
   padding: 1rem 2.5rem;
-  background: rgba(7,6,4,0.85);
+  background: rgba(7,6,4,0.95);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
 }
 .nav-logo { font-family:"Bebas Neue",sans-serif; font-size:1.8rem; letter-spacing:.07em; color:var(--gold); text-decoration:none; }
-.nav-links { display:flex; gap:2.2rem; align-items:center; }
-.nav-links a { color:var(--muted); text-decoration:none; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; transition:color .2s; }
+.nav-links { display:flex; gap:2rem; align-items:center; }
+.nav-links a { color:var(--muted); text-decoration:none; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; transition:color .2s; white-space:nowrap; }
 .nav-links a:hover { color:var(--text); }
-.nav-demo {
-  background: var(--gold); color:#07060a !important;
-  padding: .55rem 1.5rem; border-radius:2px;
-  font-weight:500 !important; letter-spacing:.08em !important;
-  transition: opacity .2s, transform .15s !important;
+.nav-demo { background:var(--gold); color:#07060a !important; padding:.55rem 1.4rem; border-radius:2px; font-weight:500 !important; transition:opacity .2s; }
+.nav-demo:hover { opacity:.88; }
+
+/* HAMBURGER */
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+.hamburger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; transition:transform .3s,opacity .3s; }
+.hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+/* MOBILE MENU */
+.mobile-menu {
+  display:none; position:fixed; top:60px; left:0; right:0; z-index:499;
+  background:rgba(7,6,4,0.98); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  flex-direction:column; padding:1.5rem 2rem; gap:1.2rem;
+  transform:translateY(-10px); opacity:0;
+  transition:transform .3s,opacity .3s;
 }
-.nav-demo:hover { opacity:.88; transform:translateY(-1px); }
+.mobile-menu.open { display:flex; transform:translateY(0); opacity:1; }
+.mobile-menu a { color:var(--text); text-decoration:none; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; padding:.5rem 0; border-bottom:1px solid var(--border); }
+.mobile-menu a:last-child { border-bottom:none; background:var(--gold); color:#07060a; text-align:center; padding:.8rem; border-radius:2px; margin-top:.5rem; font-weight:500; }
 
 /* ── HERO ── */
 .hero {
@@ -79,18 +89,13 @@ nav {
     repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(240,165,0,.022) 60px),
     repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(240,165,0,.022) 60px);
 }
-.hero-noise {
-  position:absolute; inset:0; pointer-events:none; opacity:.018;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
 .hero-inner { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; max-width:1200px; margin:0 auto; width:100%; }
-.hero-text {}
 .hero-badge {
   display:inline-flex; align-items:center; gap:.5rem;
-  background: rgba(240,165,0,.1); border:1px solid rgba(240,165,0,.2);
+  background:rgba(240,165,0,.1); border:1px solid rgba(240,165,0,.2);
   padding:.35rem 1rem; border-radius:99px; margin-bottom:1.8rem;
   font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold);
-  animation: fadeUp .7s .05s both;
+  animation:fadeUp .7s .05s both;
 }
 .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
@@ -98,29 +103,17 @@ nav {
   font-family:"Bebas Neue",sans-serif;
   font-size:clamp(4.5rem,9vw,8.5rem);
   line-height:.88; letter-spacing:.02em;
-  animation: fadeUp .7s .12s both;
+  animation:fadeUp .7s .12s both;
 }
 .hero h1 .gold { color:var(--gold); }
-.hero h1 .outline {
-  -webkit-text-stroke:2px var(--gold);
-  color:transparent;
-}
-.hero-sub {
-  margin-top:1.8rem; max-width:460px;
-  font-size:1.05rem; color:var(--muted); line-height:1.75;
-  animation: fadeUp .7s .22s both;
-}
-.hero-actions {
-  margin-top:2.5rem; display:flex; gap:1rem; flex-wrap:wrap;
-  animation: fadeUp .7s .32s both;
-}
+.hero-sub { margin-top:1.8rem; max-width:460px; font-size:1.05rem; color:var(--text); line-height:1.75; animation:fadeUp .7s .22s both; }
+.hero-actions { margin-top:2.5rem; display:flex; gap:1rem; flex-wrap:wrap; animation:fadeUp .7s .32s both; }
 .btn-primary {
   display:inline-flex; align-items:center; gap:.6rem;
   padding:.9rem 2.2rem; background:var(--gold); color:#07060a;
   font-weight:500; font-size:.9rem; letter-spacing:.07em; text-transform:uppercase;
   text-decoration:none; border-radius:3px;
   transition:opacity .2s,transform .15s,box-shadow .2s;
-  box-shadow:0 0 0 0 rgba(240,165,0,0);
 }
 .btn-primary:hover { opacity:.88; transform:translateY(-2px); box-shadow:0 8px 40px rgba(240,165,0,.25); }
 .btn-ghost {
@@ -131,50 +124,30 @@ nav {
   transition:border-color .2s,color .2s;
 }
 .btn-ghost:hover { border-color:var(--gold); color:var(--gold); }
-.hero-stats {
-  margin-top:3rem; display:flex; gap:2.5rem;
-  animation: fadeUp .7s .42s both;
-}
+.hero-stats { margin-top:3rem; display:flex; gap:2.5rem; animation:fadeUp .7s .42s both; }
 .hero-stat-num { font-family:"Bebas Neue",sans-serif; font-size:2rem; color:var(--gold); letter-spacing:.05em; line-height:1; }
-.hero-stat-label { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:.2rem; }
+.hero-stat-label { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text); margin-top:.2rem; }
 
-/* HERO LEADERBOARD VISUAL */
-.hero-visual {
-  position:relative;
-  animation: fadeUp .8s .2s both;
-}
+/* HERO LEADERBOARD */
+.hero-visual { position:relative; animation:fadeUp .8s .2s both; }
 .lb-phone {
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 40px 80px rgba(0,0,0,.7), 0 0 80px rgba(240,165,0,.08);
+  background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,.7),0 0 80px rgba(240,165,0,.08);
   max-width:360px; margin:0 auto;
 }
-.lb-header {
-  background: linear-gradient(135deg, #1a1400, #0e0c06);
-  border-bottom:1px solid var(--border);
-  padding:1rem 1.2rem;
-  display:flex; align-items:center; justify-content:space-between;
-}
+.lb-header { background:linear-gradient(135deg,#1a1400,#0e0c06); border-bottom:1px solid var(--border); padding:1rem 1.2rem; display:flex; align-items:center; justify-content:space-between; }
 .lb-header-left { display:flex; align-items:center; gap:.6rem; }
 .lb-logo { width:28px; height:28px; background:var(--gold); border-radius:6px; display:flex; align-items:center; justify-content:center; font-family:"Bebas Neue",sans-serif; font-size:.9rem; color:#07060a; }
 .lb-title { font-family:"Bebas Neue",sans-serif; font-size:1rem; letter-spacing:.06em; }
 .lb-live { display:flex; align-items:center; gap:.35rem; font-size:.65rem; letter-spacing:.12em; text-transform:uppercase; color:var(--green); }
 .lb-live-dot { width:5px; height:5px; border-radius:50%; background:var(--green); animation:pulse 1.5s infinite; }
 .lb-progress-row { padding:.7rem 1.2rem; background:rgba(240,165,0,.04); border-bottom:1px solid var(--border); }
-.lb-progress-label { font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; display:flex; justify-content:space-between; }
+.lb-progress-label { font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text); margin-bottom:.4rem; display:flex; justify-content:space-between; }
 .lb-progress-bar { height:4px; background:rgba(255,255,255,.08); border-radius:99px; overflow:hidden; }
 .lb-progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold2)); border-radius:99px; width:34%; animation:progfill 2.5s ease forwards; }
 @keyframes progfill { from{width:0} to{width:34%} }
 .lb-players { padding:.5rem 0; }
-.lb-player {
-  display:flex; align-items:center; gap:.8rem;
-  padding:.6rem 1.2rem;
-  transition:background .2s;
-  position:relative;
-}
-.lb-player:hover { background:rgba(240,165,0,.04); }
+.lb-player { display:flex; align-items:center; gap:.8rem; padding:.6rem 1.2rem; position:relative; transition:background .2s; }
 .lb-player.featured { background:linear-gradient(90deg,rgba(240,165,0,.08),transparent); }
 .lb-player.featured::before { content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--gold); }
 .lb-rank { font-family:"Bebas Neue",sans-serif; font-size:1.1rem; width:22px; text-align:center; flex-shrink:0; }
@@ -191,39 +164,29 @@ nav {
 .lb-change.up { color:var(--green); background:rgba(62,207,142,.1); }
 .lb-change.down { color:var(--red); background:rgba(240,64,64,.1); }
 .lb-footer { padding:.8rem 1.2rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
-.lb-footer-text { font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.lb-footer-text { font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text); }
 .lb-scan-btn { font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); border:1px solid rgba(240,165,0,.3); padding:.3rem .8rem; border-radius:2px; }
-.hero-glow-orb {
-  position:absolute; top:50%; right:-10%; transform:translateY(-50%);
-  width:400px; height:400px; border-radius:50%;
-  background:radial-gradient(circle,rgba(240,165,0,.07) 0%,transparent 65%);
-  pointer-events:none;
-}
 
 /* ── TICKER ── */
-.ticker {
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-  background:var(--card); overflow:hidden; padding:.75rem 0; white-space:nowrap;
-}
+.ticker { border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--card); overflow:hidden; padding:.75rem 0; white-space:nowrap; }
 .ticker-track { display:inline-flex; gap:3.5rem; animation:ticker 20s linear infinite; }
-.ticker-item { font-family:"Bebas Neue",sans-serif; font-size:.95rem; letter-spacing:.16em; color:var(--muted); display:flex; align-items:center; gap:.6rem; }
+.ticker-item { font-family:"Bebas Neue",sans-serif; font-size:.95rem; letter-spacing:.16em; color:var(--text); display:flex; align-items:center; gap:.6rem; }
 .ticker-item span { color:var(--gold); font-size:.8rem; }
 @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-/* ── SECTION COMMONS ── */
+/* ── SECTIONS ── */
 .section-wrap { max-width:1200px; margin:0 auto; padding:7rem 2.5rem; }
 .section-label { display:inline-flex; align-items:center; gap:.6rem; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
 .section-label::before { content:""; width:22px; height:1px; background:var(--gold); }
 .section-h { font-family:"Bebas Neue",sans-serif; font-size:clamp(2.8rem,5vw,5rem); line-height:.88; letter-spacing:.03em; margin-bottom:1.2rem; }
 .section-h .gold { color:var(--gold); }
-.section-sub { color:var(--muted); font-size:1rem; max-width:520px; }
+.section-sub { color:var(--text); font-size:1rem; max-width:520px; }
 
-/* ── PROBLEM STATEMENT ── */
+/* ── PROBLEM ── */
 .problem { background:var(--dark2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
 .problem-inner { max-width:1200px; margin:0 auto; padding:6rem 2.5rem; }
 .problem-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
-.problem-left .section-h { margin-bottom:1.5rem; }
-.problem-left p { color:var(--muted); margin-bottom:1rem; font-size:1rem; max-width:480px; }
+.problem-left p { color:var(--text); margin-bottom:1rem; font-size:1rem; max-width:480px; }
 .old-vs-new { margin-top:2.5rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
 .ovn-card { padding:1.5rem; border-radius:4px; }
 .ovn-card.old { background:rgba(240,64,64,.05); border:1px solid rgba(240,64,64,.12); }
@@ -231,68 +194,42 @@ nav {
 .ovn-label { font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; margin-bottom:.8rem; }
 .ovn-card.old .ovn-label { color:var(--red); }
 .ovn-card.new .ovn-label { color:var(--gold); }
-.ovn-item { font-size:.85rem; color:var(--muted); padding:.25rem 0; display:flex; align-items:center; gap:.5rem; }
+.ovn-item { font-size:.85rem; color:var(--text); padding:.25rem 0; display:flex; align-items:center; gap:.5rem; }
 .ovn-item::before { content:""; width:4px; height:4px; border-radius:50%; flex-shrink:0; }
 .ovn-card.old .ovn-item::before { background:var(--red); }
 .ovn-card.new .ovn-item::before { background:var(--gold); }
-.problem-right {}
 .metric-stack { display:flex; flex-direction:column; gap:1rem; }
-.metric-card {
-  background:var(--card); border:1px solid var(--border); border-radius:6px;
-  padding:1.5rem 1.8rem;
-  display:grid; grid-template-columns:auto 1fr auto;
-  gap:1.2rem; align-items:center;
-  transition:border-color .2s,transform .2s;
-}
+.metric-card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:1.5rem 1.8rem; display:grid; grid-template-columns:auto 1fr auto; gap:1.2rem; align-items:center; transition:border-color .2s,transform .2s; }
 .metric-card:hover { border-color:rgba(240,165,0,.3); transform:translateX(4px); }
 .metric-icon { font-size:1.6rem; }
-.metric-label { font-size:.8rem; color:var(--muted); letter-spacing:.05em; }
+.metric-label { font-size:.8rem; color:var(--text); letter-spacing:.05em; }
 .metric-val { font-family:"Bebas Neue",sans-serif; font-size:2rem; color:var(--gold); letter-spacing:.04em; line-height:1; }
-.metric-sub { font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.metric-sub { font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text); }
 
 /* ── HOW IT WORKS ── */
 .how-wrap { max-width:1200px; margin:0 auto; padding:7rem 2.5rem; }
 .how-steps { margin-top:4rem; display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
-.how-steps::before {
-  content:""; position:absolute; top:40px; left:10%; right:10%; height:1px;
-  background:linear-gradient(90deg,transparent,var(--border),var(--gold),var(--border),transparent);
-}
-.how-step { text-align:center; padding:0 1.5rem; position:relative; }
-.how-step-num {
-  width:80px; height:80px; border-radius:50%; margin:0 auto 1.5rem;
-  background:var(--card); border:1px solid var(--border);
-  display:flex; align-items:center; justify-content:center;
-  font-family:"Bebas Neue",sans-serif; font-size:1.8rem; color:var(--gold);
-  position:relative; z-index:1;
-  transition:border-color .3s,box-shadow .3s;
-}
+.how-steps::before { content:""; position:absolute; top:40px; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,var(--border),var(--gold),var(--border),transparent); }
+.how-step { text-align:center; padding:0 1.5rem; }
+.how-step-num { width:80px; height:80px; border-radius:50%; margin:0 auto 1.5rem; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:1.8rem; position:relative; z-index:1; transition:border-color .3s,box-shadow .3s; }
 .how-step:hover .how-step-num { border-color:var(--gold); box-shadow:0 0 30px rgba(240,165,0,.2); }
-.how-step-icon { font-size:1.8rem; }
 .how-step h3 { font-size:.95rem; font-weight:500; margin-bottom:.5rem; }
-.how-step p { font-size:.85rem; color:var(--muted); line-height:1.65; }
+.how-step p { font-size:.85rem; color:var(--text); line-height:1.65; }
 
-/* ── LEADERBOARD SHOWCASE ── */
+/* ── SHOWCASE ── */
 .showcase { background:var(--dark2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
 .showcase-inner { max-width:1200px; margin:0 auto; padding:7rem 2.5rem; display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
-.showcase-text .section-h { margin-bottom:1.5rem; }
+.showcase-text p { color:var(--text); }
 .feature-list { margin-top:2rem; display:flex; flex-direction:column; gap:.8rem; }
 .feature-item { display:flex; align-items:flex-start; gap:1rem; padding:1rem 1.2rem; background:var(--card); border:1px solid var(--border); border-radius:4px; transition:border-color .2s; }
 .feature-item:hover { border-color:rgba(240,165,0,.25); }
 .feature-item-icon { font-size:1.3rem; flex-shrink:0; margin-top:1px; }
 .feature-item-text h4 { font-size:.9rem; font-weight:500; margin-bottom:.2rem; }
-.feature-item-text p { font-size:.82rem; color:var(--muted); }
+.feature-item-text p { font-size:.82rem; color:var(--text); }
 
-/* BIG LEADERBOARD */
-.big-lb {
-  background:var(--card); border:1px solid var(--border); border-radius:10px;
-  overflow:hidden;
-  box-shadow:0 30px 80px rgba(0,0,0,.5), 0 0 60px rgba(240,165,0,.06);
-}
-.big-lb-header {
-  background:linear-gradient(135deg,#1c1600,#100e06);
-  padding:1.2rem 1.5rem; border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-}
+/* BIG LB */
+.big-lb { background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px rgba(240,165,0,.06); }
+.big-lb-header { background:linear-gradient(135deg,#1c1600,#100e06); padding:1.2rem 1.5rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; }
 .big-lb-title { font-family:"Bebas Neue",sans-serif; font-size:1.3rem; letter-spacing:.06em; }
 .big-lb-meta { display:flex; align-items:center; gap:1rem; }
 .big-lb-badge { font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; padding:.2rem .7rem; border-radius:99px; }
@@ -301,12 +238,7 @@ nav {
 .big-lb-progress { padding:.8rem 1.5rem; background:rgba(240,165,0,.03); border-bottom:1px solid var(--border); }
 .big-lb-progress-bar { height:6px; background:rgba(255,255,255,.06); border-radius:99px; overflow:hidden; margin-top:.4rem; }
 .big-lb-progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold2)); width:22%; animation:progfill 3s ease forwards; }
-.big-lb-row {
-  display:grid; grid-template-columns:32px 44px 1fr auto auto;
-  gap:.8rem; align-items:center; padding:.7rem 1.5rem;
-  border-bottom:1px solid rgba(255,255,255,.03);
-  transition:background .15s;
-}
+.big-lb-row { display:grid; grid-template-columns:32px 44px 1fr auto auto; gap:.8rem; align-items:center; padding:.7rem 1.5rem; border-bottom:1px solid rgba(255,255,255,.03); transition:background .15s; }
 .big-lb-row:last-child { border-bottom:none; }
 .big-lb-row:hover { background:rgba(240,165,0,.03); }
 .big-lb-row.top1 { background:linear-gradient(90deg,rgba(240,165,0,.07),transparent); }
@@ -317,55 +249,38 @@ nav {
 .blb-rank.rn { color:var(--muted); font-size:.9rem; }
 .blb-av { width:40px; height:40px; border-radius:50%; overflow:hidden; border:1.5px solid rgba(240,165,0,.15); background:var(--dark2); }
 .blb-av img { width:100%; height:100%; object-fit:cover; }
-.blb-info {}
 .blb-name { font-size:.88rem; font-weight:500; }
 .blb-title { font-size:.65rem; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); }
 .blb-pts { font-family:"Bebas Neue",sans-serif; font-size:1.2rem; color:var(--gold); }
 .blb-chg { font-size:.68rem; padding:.2rem .45rem; border-radius:3px; }
 .blb-chg.up { color:var(--green); background:rgba(62,207,142,.1); }
 .blb-chg.dn { color:var(--red); background:rgba(240,64,64,.08); }
-.blb-chg.eq { color:var(--muted); }
+.blb-chg.eq { color:var(--text); }
 .big-lb-foot { padding:.8rem 1.5rem; background:rgba(240,165,0,.03); border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
-.blb-foot-text { font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.blb-foot-text { font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text); }
 .blb-cta { font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); }
 
-/* ── WHY OWNERS LOVE IT ── */
+/* ── WHY ── */
 .why-wrap { max-width:1200px; margin:0 auto; padding:7rem 2.5rem; }
 .why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:4rem; }
-.why-card {
-  background:var(--card); border:1px solid var(--border); border-radius:6px;
-  padding:2rem; position:relative; overflow:hidden;
-  transition:border-color .25s,transform .2s;
-}
+.why-card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:2rem; position:relative; overflow:hidden; transition:border-color .25s,transform .2s; }
 .why-card:hover { border-color:rgba(240,165,0,.3); transform:translateY(-4px); }
-.why-card::after { content:""; position:absolute; inset:0; background:linear-gradient(135deg,rgba(240,165,0,.03),transparent); opacity:0; transition:opacity .3s; }
-.why-card:hover::after { opacity:1; }
 .why-card-num { font-family:"Bebas Neue",sans-serif; font-size:4rem; color:rgba(240,165,0,.08); line-height:1; margin-bottom:.8rem; }
 .why-card h3 { font-size:1.05rem; font-weight:500; margin-bottom:.6rem; }
-.why-card p { font-size:.88rem; color:var(--muted); line-height:1.7; }
+.why-card p { font-size:.88rem; color:var(--text); line-height:1.7; }
 .why-card-tag { display:inline-block; margin-top:1rem; font-size:.65rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); border:1px solid var(--border); padding:.2rem .7rem; border-radius:2px; }
 
-/* ── PSYCHOLOGY / CUSTOMER HOOK ── */
+/* ── HOOK ── */
 .hook { background:var(--dark2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
 .hook-inner { max-width:1200px; margin:0 auto; padding:7rem 2.5rem; }
 .hook-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; margin-top:4rem; }
-.hook-left {}
 .hook-triggers { display:flex; flex-direction:column; gap:1rem; }
-.trigger-item {
-  display:flex; gap:1.2rem; align-items:flex-start;
-  padding:1.2rem; background:var(--card); border:1px solid var(--border); border-radius:5px;
-  transition:border-color .2s;
-}
+.trigger-item { display:flex; gap:1.2rem; align-items:flex-start; padding:1.2rem; background:var(--card); border:1px solid var(--border); border-radius:5px; transition:border-color .2s; }
 .trigger-item:hover { border-color:rgba(240,165,0,.25); }
 .trigger-icon { font-size:1.5rem; flex-shrink:0; }
 .trigger-text h4 { font-size:.9rem; font-weight:500; margin-bottom:.2rem; }
-.trigger-text p { font-size:.82rem; color:var(--muted); }
-.hook-right {}
-.player-card {
-  background:var(--card); border:1px solid var(--border); border-radius:10px;
-  padding:2rem; text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.4);
-}
+.trigger-text p { font-size:.82rem; color:var(--text); }
+.player-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:2rem; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.4); }
 .pc-avatar { width:80px; height:80px; border-radius:50%; margin:0 auto 1rem; overflow:hidden; border:2px solid var(--gold); background:var(--dark2); }
 .pc-avatar img { width:100%; height:100%; object-fit:cover; }
 .pc-name { font-family:"Bebas Neue",sans-serif; font-size:1.8rem; letter-spacing:.05em; }
@@ -373,49 +288,32 @@ nav {
 .pc-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; margin:1.2rem 0; }
 .pc-stat { background:var(--dark2); border:1px solid var(--border); border-radius:4px; padding:.8rem .5rem; }
 .pc-stat-val { font-family:"Bebas Neue",sans-serif; font-size:1.5rem; color:var(--gold); }
-.pc-stat-label { font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.pc-stat-label { font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text); }
 .pc-progress { margin:1rem 0; }
-.pc-progress-label { display:flex; justify-content:space-between; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
+.pc-progress-label { display:flex; justify-content:space-between; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text); margin-bottom:.4rem; }
 .pc-progress-bar { height:8px; background:rgba(255,255,255,.06); border-radius:99px; overflow:hidden; }
 .pc-progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold2)); width:68%; border-radius:99px; }
-.pc-sms-preview { background:var(--dark2); border:1px solid var(--border); border-radius:8px; padding:1rem; margin-top:1.2rem; text-align:left; }
-.pc-sms-from { font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--green); margin-bottom:.3rem; }
-.pc-sms-text { font-size:.82rem; color:var(--text); }
 
-/* ── QUOTE BAND ── */
-.quote-band {
-  padding:6rem 2.5rem; text-align:center; position:relative; overflow:hidden;
-}
+/* ── QUOTE ── */
+.quote-band { padding:6rem 2.5rem; text-align:center; position:relative; overflow:hidden; }
 .quote-band::before { content:"\201C"; position:absolute; top:-3rem; left:50%; transform:translateX(-50%); font-family:"Bebas Neue",sans-serif; font-size:24rem; color:rgba(240,165,0,.03); line-height:1; pointer-events:none; }
 .quote-band blockquote { font-family:"Bebas Neue",sans-serif; font-size:clamp(2rem,5vw,4rem); line-height:1.05; letter-spacing:.03em; max-width:900px; margin:0 auto; position:relative; z-index:1; }
 .quote-band blockquote .gold { color:var(--gold); }
-.quote-band cite { display:block; margin-top:1.5rem; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); font-style:normal; position:relative; z-index:1; }
+.quote-band cite { display:block; margin-top:1.5rem; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; color:var(--text); font-style:normal; position:relative; z-index:1; }
 
 /* ── FINAL CTA ── */
-.final-cta {
-  background:var(--dark2); border-top:1px solid var(--border);
-  padding:8rem 2.5rem; text-align:center; position:relative; overflow:hidden;
-}
+.final-cta { background:var(--dark2); border-top:1px solid var(--border); padding:8rem 2.5rem; text-align:center; position:relative; overflow:hidden; }
 .final-cta::before { content:""; position:absolute; inset:0; background:radial-gradient(ellipse 70% 80% at 50% 100%,rgba(240,165,0,.06) 0%,transparent 60%); pointer-events:none; }
 .final-cta h2 { font-family:"Bebas Neue",sans-serif; font-size:clamp(3rem,7vw,6rem); line-height:.9; letter-spacing:.03em; margin-bottom:1.2rem; position:relative; z-index:1; }
 .final-cta h2 .gold { color:var(--gold); }
-.final-cta p { color:var(--muted); max-width:460px; margin:0 auto 2.5rem; font-size:1rem; position:relative; z-index:1; }
+.final-cta p { color:var(--text); max-width:460px; margin:0 auto 2.5rem; font-size:1rem; position:relative; z-index:1; }
 .final-cta .cta-row { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
-
-/* ── SMS DISCLOSURE ── */
-.sms-disc { max-width:900px; margin:0 auto; padding:3rem 2.5rem; }
-.sms-disc-box { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:2rem; display:grid; grid-template-columns:auto 1fr; gap:1.5rem; align-items:start; }
-.sms-disc-icon { width:44px; height:44px; border-radius:50%; background:rgba(240,165,0,.08); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
-.sms-disc-text h3 { font-size:.9rem; font-weight:500; color:var(--gold); margin-bottom:.5rem; }
-.sms-disc-text p { font-size:.82rem; color:var(--muted); }
-.sms-disc-text p + p { margin-top:.4rem; }
-.sms-disc-text a { color:var(--gold); }
 
 /* ── FOOTER ── */
 footer { border-top:1px solid var(--border); padding:2rem 2.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
-.foot-logo { font-family:"Bebas Neue",sans-serif; font-size:1.3rem; letter-spacing:.07em; color:var(--muted); }
-footer p { font-size:.75rem; color:var(--muted); }
-.foot-nav a { color:var(--muted); text-decoration:none; font-size:.75rem; margin-left:1.5rem; transition:color .2s; }
+.foot-logo { font-family:"Bebas Neue",sans-serif; font-size:1.3rem; letter-spacing:.07em; color:var(--text); }
+footer p { font-size:.75rem; color:var(--text); }
+.foot-nav a { color:var(--text); text-decoration:none; font-size:.75rem; margin-left:1.5rem; transition:color .2s; }
 .foot-nav a:hover { color:var(--gold); }
 
 /* ── ANIMATIONS ── */
@@ -424,35 +322,48 @@ footer p { font-size:.75rem; color:var(--muted); }
 .reveal.visible { opacity:1; transform:translateY(0); }
 
 /* ── MOBILE ── */
-@media(max-width:900px) {
-  nav { padding:1rem 1.2rem; }
-  .nav-links { gap:.8rem; }
-  .nav-links a { font-size:.7rem; }
-  .hero { padding:7rem 1.2rem 4rem; }
-  .hero-inner { grid-template-columns:1fr; gap:3rem; }
+@media(max-width:768px) {
+  nav { padding:.9rem 1.2rem; }
+  .nav-links { display:none; }
+  .hamburger { display:flex; }
+
+  .hero { padding:6rem 1.2rem 3rem; min-height:auto; }
+  .hero-inner { grid-template-columns:1fr; gap:2.5rem; }
   .hero-visual { order:-1; }
   .lb-phone { max-width:100%; }
-  .problem-grid,.showcase-inner,.hook-grid { grid-template-columns:1fr; gap:3rem; }
-  .how-steps { grid-template-columns:repeat(2,1fr); gap:2rem; }
-  .how-steps::before { display:none; }
-  .why-grid { grid-template-columns:1fr; }
+  .hero h1 { font-size:clamp(3.5rem,14vw,5rem); }
+  .hero-sub { font-size:.95rem; }
+  .hero-stats { gap:1.5rem; }
+  .hero-stat-num { font-size:1.6rem; }
+
+  .problem-inner,.how-wrap,.why-wrap,.hook-inner,.section-wrap { padding:4rem 1.2rem; }
+  .problem-grid,.showcase-inner,.hook-grid { grid-template-columns:1fr; gap:2.5rem; }
   .old-vs-new { grid-template-columns:1fr; }
-  .section-wrap,.how-wrap,.why-wrap,.hook-inner,.problem-inner { padding:5rem 1.2rem; }
-  .showcase-inner { padding:5rem 1.2rem; }
-  footer { flex-direction:column; text-align:center; }
-  .foot-nav a { margin-left:.6rem; }
-  .sms-disc { padding:2rem 1.2rem; }
-  .sms-disc-box { grid-template-columns:1fr; }
-  .final-cta { padding:6rem 1.2rem; }
+  .how-steps { grid-template-columns:1fr 1fr; gap:2rem; }
+  .how-steps::before { display:none; }
+  .how-step { padding:0 .5rem; }
+  .why-grid { grid-template-columns:1fr; gap:1rem; }
+  .showcase-inner { padding:4rem 1.2rem; }
+
+  .big-lb-row { grid-template-columns:28px 36px 1fr auto; gap:.5rem; padding:.6rem 1rem; }
+  .blb-chg { display:none; }
+  .big-lb-header { padding:1rem; }
+  .big-lb-foot { flex-direction:column; gap:.5rem; text-align:center; }
+
   .quote-band { padding:4rem 1.2rem; }
+  .final-cta { padding:5rem 1.2rem; }
+  .final-cta .cta-row { flex-direction:column; align-items:center; }
+
+  footer { flex-direction:column; text-align:center; padding:2rem 1.2rem; }
+  .foot-nav { display:flex; flex-wrap:wrap; justify-content:center; gap:.5rem; }
+  .foot-nav a { margin-left:0; }
+
+  .hero-actions { flex-direction:column; }
+  .btn-primary,.btn-ghost { justify-content:center; width:100%; max-width:320px; }
 }
 </style>
 </head>
 <body>
-
-<!-- CURSOR -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-trail" id="cursorTrail"></div>
 
 <!-- NAV -->
 <nav>
@@ -464,26 +375,32 @@ footer p { font-size:.75rem; color:var(--muted); }
     <a href="privacy.html">Privacy</a>
     <a href="mailto:barrank.llc@gmail.com" class="nav-demo">Book a Demo</a>
   </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#how" onclick="closeMenu()">How It Works</a>
+  <a href="#showcase" onclick="closeMenu()">The Product</a>
+  <a href="about.html">About</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="mailto:barrank.llc@gmail.com">Book a Demo</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
-  <div class="hero-noise"></div>
   <div class="hero-inner">
     <div class="hero-text">
       <div class="hero-badge"><span class="badge-dot"></span>Now Available for Bars &amp; Venues</div>
       <h1>Turn<br>Customers<br>Into <span class="gold">Competitors</span></h1>
-      <p class="hero-sub">Bar Rank is the competitive loyalty engine that makes your regulars obsessed — live leaderboards, skill-based challenges, and SMS rank alerts that drive repeat visits automatically.</p>
+      <p class="hero-sub">Bar Rank is the competitive loyalty engine that makes your regulars obsessed — live leaderboards, skill-based challenges, and rank alerts that drive repeat visits automatically.</p>
       <div class="hero-actions">
-        <a href="mailto:barrank.llc@gmail.com" class="btn-primary">
-          <span>Book a Demo</span>
-          <span>→</span>
-        </a>
-        <a href="#how" class="btn-ghost">
-          <span>See How It Works</span>
-        </a>
+        <a href="mailto:barrank.llc@gmail.com" class="btn-primary">Book a Demo →</a>
+        <a href="#how" class="btn-ghost">See How It Works</a>
       </div>
       <div class="hero-stats">
         <div>
@@ -496,12 +413,11 @@ footer p { font-size:.75rem; color:var(--muted); }
         </div>
         <div>
           <div class="hero-stat-num">0</div>
-          <div class="hero-stat-label">App Downloads Needed</div>
+          <div class="hero-stat-label">App Downloads</div>
         </div>
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-glow-orb"></div>
       <div class="lb-phone">
         <div class="lb-header">
           <div class="lb-header-left">
@@ -541,7 +457,7 @@ footer p { font-size:.75rem; color:var(--muted); }
             <div class="lb-avatar"><img src="https://raw.githubusercontent.com/cooperm365/last-one-standing/main/Dart%20Hustler.png" alt="Dart Hustler" onerror="this.style.display='none'"></div>
             <div class="lb-info"><div class="lb-name">Coop</div><div class="lb-badge-tag">Dart Hustler</div></div>
             <div class="lb-pts">84</div>
-            <div class="lb-change" style="color:var(--muted)">—</div>
+            <div class="lb-change" style="color:var(--text)">—</div>
           </div>
         </div>
         <div class="lb-footer">
@@ -558,7 +474,6 @@ footer p { font-size:.75rem; color:var(--muted); }
   <div class="ticker-track">
     <span class="ticker-item"><span>★</span>Live Leaderboards</span>
     <span class="ticker-item"><span>★</span>QR Check-Ins</span>
-    <span class="ticker-item"><span>★</span>SMS Rank Alerts</span>
     <span class="ticker-item"><span>★</span>Custom Challenges</span>
     <span class="ticker-item"><span>★</span>Points &amp; Rewards</span>
     <span class="ticker-item"><span>★</span>No App Required</span>
@@ -566,7 +481,6 @@ footer p { font-size:.75rem; color:var(--muted); }
     <span class="ticker-item"><span>★</span>Player Avatars &amp; Ranks</span>
     <span class="ticker-item"><span>★</span>Live Leaderboards</span>
     <span class="ticker-item"><span>★</span>QR Check-Ins</span>
-    <span class="ticker-item"><span>★</span>SMS Rank Alerts</span>
     <span class="ticker-item"><span>★</span>Custom Challenges</span>
     <span class="ticker-item"><span>★</span>Points &amp; Rewards</span>
     <span class="ticker-item"><span>★</span>No App Required</span>
@@ -575,14 +489,14 @@ footer p { font-size:.75rem; color:var(--muted); }
   </div>
 </div>
 
-<!-- PROBLEM STATEMENT -->
+<!-- PROBLEM -->
 <section class="problem">
   <div class="problem-inner">
     <div class="problem-grid">
       <div class="problem-left reveal">
         <p class="section-label">The Problem</p>
         <h2 class="section-h">Punch Cards<br>Are <span class="gold">Dead.</span></h2>
-        <p>Traditional loyalty programs don't work for bars. They're forgettable, impersonal, and give customers zero reason to come back beyond a free drink they'll forget about.</p>
+        <p>Traditional loyalty programs don't work for bars. They're forgettable, impersonal, and give customers zero reason to come back beyond a free drink.</p>
         <p>Bar Rank replaces outdated loyalty with something customers actually care about — a rank to earn, protect, and compete for.</p>
         <div class="old-vs-new">
           <div class="ovn-card old">
@@ -597,9 +511,9 @@ footer p { font-size:.75rem; color:var(--muted); }
             <div class="ovn-label">Bar Rank</div>
             <div class="ovn-item">Live leaderboard they check daily</div>
             <div class="ovn-item">Competition drives return visits</div>
-            <div class="ovn-item">SMS keeps them engaged</div>
             <div class="ovn-item">Real community forms</div>
             <div class="ovn-item">They come back to defend rank</div>
+            <div class="ovn-item">Slow nights become events</div>
           </div>
         </div>
       </div>
@@ -607,43 +521,23 @@ footer p { font-size:.75rem; color:var(--muted); }
         <div class="metric-stack">
           <div class="metric-card">
             <div class="metric-icon">🔄</div>
-            <div>
-              <div class="metric-label">Average repeat visit increase</div>
-            </div>
-            <div>
-              <div class="metric-val">3×</div>
-              <div class="metric-sub">vs. no loyalty</div>
-            </div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-icon">📱</div>
-            <div>
-              <div class="metric-label">SMS open rate vs. email</div>
-            </div>
-            <div>
-              <div class="metric-val">98%</div>
-              <div class="metric-sub">messages read</div>
-            </div>
+            <div><div class="metric-label">Average repeat visit increase</div></div>
+            <div><div class="metric-val">3×</div><div class="metric-sub">vs. no loyalty</div></div>
           </div>
           <div class="metric-card">
             <div class="metric-icon">⚡</div>
-            <div>
-              <div class="metric-label">Time to check in at bar</div>
-            </div>
-            <div>
-              <div class="metric-val">10s</div>
-              <div class="metric-sub">scan &amp; done</div>
-            </div>
+            <div><div class="metric-label">Time to check in at bar</div></div>
+            <div><div class="metric-val">10s</div><div class="metric-sub">scan &amp; done</div></div>
           </div>
           <div class="metric-card">
             <div class="metric-icon">🎯</div>
-            <div>
-              <div class="metric-label">Customers who return same week</div>
-            </div>
-            <div>
-              <div class="metric-val">62%</div>
-              <div class="metric-sub">after rank drop</div>
-            </div>
+            <div><div class="metric-label">Customers who return same week</div></div>
+            <div><div class="metric-val">62%</div><div class="metric-sub">after rank drop</div></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">📊</div>
+            <div><div class="metric-label">Increase in weekday traffic</div></div>
+            <div><div class="metric-val">40%</div><div class="metric-sub">challenge nights</div></div>
           </div>
         </div>
       </div>
@@ -660,24 +554,24 @@ footer p { font-size:.75rem; color:var(--muted); }
     </div>
     <div class="how-steps">
       <div class="how-step reveal">
-        <div class="how-step-num"><div class="how-step-icon">📋</div></div>
+        <div class="how-step-num">📋</div>
         <h3>Bar Sets Up</h3>
         <p>Configure your leaderboard, challenges, and rewards in minutes. No technical knowledge needed.</p>
       </div>
       <div class="how-step reveal">
-        <div class="how-step-num"><div class="how-step-icon">📲</div></div>
+        <div class="how-step-num">📲</div>
         <h3>Customer Scans QR</h3>
-        <p>Scan the in-venue QR code, enter name and phone number, pick an avatar, and they're live on the board.</p>
+        <p>Scan the QR code, enter name and phone number, pick an avatar, and they're live on the board.</p>
       </div>
       <div class="how-step reveal">
-        <div class="how-step-num"><div class="how-step-icon">🏆</div></div>
+        <div class="how-step-num">🏆</div>
         <h3>Points Stack Up</h3>
         <p>Every check-in earns points. Challenges multiply them. The leaderboard updates in real time.</p>
       </div>
       <div class="how-step reveal">
-        <div class="how-step-num"><div class="how-step-icon">💬</div></div>
-        <h3>SMS Brings Them Back</h3>
-        <p>Rank drops trigger automatic texts. Customers come back before the weekend to reclaim their spot.</p>
+        <div class="how-step-num">🔥</div>
+        <h3>They Come Back</h3>
+        <p>Customers return to defend their rank, complete challenges, and climb to the top.</p>
       </div>
     </div>
   </div>
@@ -695,7 +589,7 @@ footer p { font-size:.75rem; color:var(--muted); }
           <div class="feature-item-icon">🎭</div>
           <div class="feature-item-text">
             <h4>Custom Player Avatars &amp; Rank Titles</h4>
-            <p>Players pick from characters like The Legend, High Roller, Pool Shark, and Dart Hustler — building real identity and attachment.</p>
+            <p>Players pick from characters like The Legend, High Roller, Pool Shark — building real identity and attachment to your venue.</p>
           </div>
         </div>
         <div class="feature-item">
@@ -709,14 +603,14 @@ footer p { font-size:.75rem; color:var(--muted); }
           <div class="feature-item-icon">📡</div>
           <div class="feature-item-text">
             <h4>Live TV Display Mode</h4>
-            <p>Put the leaderboard on the bar TV. It auto-refreshes every 30 seconds. The energy in the room shifts immediately.</p>
+            <p>Put the leaderboard on the bar TV. It auto-refreshes and the energy in the room shifts immediately.</p>
           </div>
         </div>
         <div class="feature-item">
           <div class="feature-item-icon">🎯</div>
           <div class="feature-item-text">
-            <h4>Bar Owner Controls Everything</h4>
-            <p>Award bonus points, set challenges, manage events, and send messages — all from your admin dashboard.</p>
+            <h4>Full Bar Owner Control</h4>
+            <p>Award bonus points, set challenges, manage events — all from your admin dashboard.</p>
           </div>
         </div>
       </div>
@@ -731,54 +625,54 @@ footer p { font-size:.75rem; color:var(--muted); }
           </div>
         </div>
         <div class="big-lb-progress">
-          <div style="display:flex;justify-content:space-between;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem"><span>Leader: 132 pts</span><span>68 pts from winning</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text);margin-bottom:.4rem"><span>Leader: 132 pts</span><span>68 pts from winning</span></div>
           <div class="big-lb-progress-bar"><div class="big-lb-progress-fill"></div></div>
         </div>
         <div class="big-lb-row top1">
           <div class="blb-rank r1">1</div>
           <div class="blb-av"><img src="https://raw.githubusercontent.com/cooperm365/last-one-standing/main/High%20Roller.png" alt="" onerror="this.style.display='none'"></div>
-          <div class="blb-info"><div class="blb-name">Jake M.</div><div class="blb-title">High Roller</div></div>
+          <div><div class="blb-name">Jake M.</div><div class="blb-title">High Roller</div></div>
           <div class="blb-pts">132</div>
           <div class="blb-chg up">↑2</div>
         </div>
         <div class="big-lb-row">
           <div class="blb-rank r2">2</div>
           <div class="blb-av"><img src="https://raw.githubusercontent.com/cooperm365/last-one-standing/main/The%20Legend.png" alt="" onerror="this.style.display='none'"></div>
-          <div class="blb-info"><div class="blb-name">Sarah K.</div><div class="blb-title">The Legend</div></div>
+          <div><div class="blb-name">Sarah K.</div><div class="blb-title">The Legend</div></div>
           <div class="blb-pts">118</div>
           <div class="blb-chg dn">↓1</div>
         </div>
         <div class="big-lb-row">
           <div class="blb-rank r3">3</div>
           <div class="blb-av"><img src="https://raw.githubusercontent.com/cooperm365/last-one-standing/main/Pool%20Shark.png" alt="" onerror="this.style.display='none'"></div>
-          <div class="blb-info"><div class="blb-name">Marcus T.</div><div class="blb-title">Pool Shark</div></div>
+          <div><div class="blb-name">Marcus T.</div><div class="blb-title">Pool Shark</div></div>
           <div class="blb-pts">97</div>
           <div class="blb-chg up">↑1</div>
         </div>
         <div class="big-lb-row">
           <div class="blb-rank rn">4</div>
           <div class="blb-av"><img src="https://raw.githubusercontent.com/cooperm365/last-one-standing/main/Dart%20Hustler.png" alt="" onerror="this.style.display='none'"></div>
-          <div class="blb-info"><div class="blb-name">Coop</div><div class="blb-title">Dart Hustler</div></div>
+          <div><div class="blb-name">Coop</div><div class="blb-title">Dart Hustler</div></div>
           <div class="blb-pts">84</div>
           <div class="blb-chg eq">—</div>
         </div>
         <div class="big-lb-row">
           <div class="blb-rank rn">5</div>
           <div class="blb-av"><img src="https://raw.githubusercontent.com/cooperm365/last-one-standing/main/Gambling%20Pirate.png" alt="" onerror="this.style.display='none'"></div>
-          <div class="blb-info"><div class="blb-name">Devon R.</div><div class="blb-title">Gambling Pirate</div></div>
+          <div><div class="blb-name">Devon R.</div><div class="blb-title">Gambling Pirate</div></div>
           <div class="blb-pts">71</div>
           <div class="blb-chg up">↑3</div>
         </div>
         <div class="big-lb-row">
           <div class="blb-rank rn">6</div>
           <div class="blb-av"><img src="https://raw.githubusercontent.com/cooperm365/last-one-standing/main/Pool%20Queen.png" alt="" onerror="this.style.display='none'"></div>
-          <div class="blb-info"><div class="blb-name">Lily W.</div><div class="blb-title">Pool Queen</div></div>
+          <div><div class="blb-name">Lily W.</div><div class="blb-title">Pool Queen</div></div>
           <div class="blb-pts">63</div>
           <div class="blb-chg dn">↓2</div>
         </div>
         <div class="big-lb-foot">
           <span class="blb-foot-text">6 of 24 players shown</span>
-          <span class="blb-cta">Not on the board? Scan to join →</span>
+          <span class="blb-cta">Scan to join →</span>
         </div>
       </div>
     </div>
@@ -797,7 +691,7 @@ footer p { font-size:.75rem; color:var(--muted); }
       <div class="why-card reveal">
         <div class="why-card-num">01</div>
         <h3>Repeat Visits on Autopilot</h3>
-        <p>Customers don't just come back for your drinks — they come back to protect their rank. Every text notification is a reason to walk through your door again.</p>
+        <p>Customers don't just come back for your drinks — they come back to protect their rank. Every notification is a reason to walk through your door again.</p>
         <span class="why-card-tag">Retention Engine</span>
       </div>
       <div class="why-card reveal">
@@ -815,26 +709,26 @@ footer p { font-size:.75rem; color:var(--muted); }
       <div class="why-card reveal">
         <div class="why-card-num">04</div>
         <h3>Zero Tech Overhead</h3>
-        <p>Print a QR code. Put it on the bar. You're live. No app, no complicated onboarding, no IT department needed. Works on any phone, any browser.</p>
+        <p>Print a QR code. Put it on the bar. You're live. No app, no complicated onboarding, no IT needed. Works on any phone, any browser.</p>
         <span class="why-card-tag">Simple Setup</span>
       </div>
       <div class="why-card reveal">
         <div class="why-card-num">05</div>
-        <h3>Direct SMS Line to Regulars</h3>
-        <p>When you need to fill a slow Wednesday, you don't need ad spend — you have a direct line to your most loyal customers who actually read their texts.</p>
-        <span class="why-card-tag">SMS Marketing</span>
+        <h3>Know Your Best Customers</h3>
+        <p>See who your top regulars are, how often they check in, and which challenges drive the most engagement — all from your dashboard.</p>
+        <span class="why-card-tag">Customer Insights</span>
       </div>
       <div class="why-card reveal">
         <div class="why-card-num">06</div>
         <h3>Your Competitors Don't Have This</h3>
-        <p>Bar Rank is new. Early adopters build a loyal, engaged customer base before the bar down the street even knows this exists. First mover advantage is real.</p>
+        <p>Bar Rank is new. Early adopters build a loyal, engaged customer base before the bar down the street even knows this exists.</p>
         <span class="why-card-tag">Competitive Edge</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PSYCHOLOGY HOOK -->
+<!-- PSYCHOLOGY -->
 <section class="hook">
   <div class="hook-inner">
     <div class="reveal">
@@ -849,14 +743,14 @@ footer p { font-size:.75rem; color:var(--muted); }
             <div class="trigger-icon">🥇</div>
             <div class="trigger-text">
               <h4>Status &amp; Recognition</h4>
-              <p>Seeing your name at the top of a public leaderboard triggers the same dopamine response as winning a trophy. People come back to feel that again.</p>
+              <p>Seeing your name at the top of a public leaderboard triggers the same dopamine response as winning. People come back to feel that again.</p>
             </div>
           </div>
           <div class="trigger-item">
             <div class="trigger-icon">🔥</div>
             <div class="trigger-text">
               <h4>Loss Aversion</h4>
-              <p>Dropping from #2 to #3 is more motivating than gaining points. When customers get a "you've been overtaken" text, they show up to fight back.</p>
+              <p>Dropping from #2 to #3 is more motivating than gaining points. When customers get knocked down, they show up to fight back.</p>
             </div>
           </div>
           <div class="trigger-item">
@@ -870,7 +764,7 @@ footer p { font-size:.75rem; color:var(--muted); }
             <div class="trigger-icon">🎯</div>
             <div class="trigger-text">
               <h4>Progress &amp; Goals</h4>
-              <p>A progress bar, a rank title to unlock, a challenge to complete — humans are wired to finish what they start. Bar Rank gives them something to finish.</p>
+              <p>A progress bar, a rank title to unlock, a challenge to complete — humans are wired to finish what they start.</p>
             </div>
           </div>
         </div>
@@ -881,26 +775,13 @@ footer p { font-size:.75rem; color:var(--muted); }
           <div class="pc-name">Sarah K.</div>
           <div class="pc-rank-title">🏆 The Legend · Rank #2</div>
           <div class="pc-stats">
-            <div class="pc-stat">
-              <div class="pc-stat-val">118</div>
-              <div class="pc-stat-label">Points</div>
-            </div>
-            <div class="pc-stat">
-              <div class="pc-stat-val">14</div>
-              <div class="pc-stat-label">Check-Ins</div>
-            </div>
-            <div class="pc-stat">
-              <div class="pc-stat-val">3</div>
-              <div class="pc-stat-label">Wins</div>
-            </div>
+            <div class="pc-stat"><div class="pc-stat-val">118</div><div class="pc-stat-label">Points</div></div>
+            <div class="pc-stat"><div class="pc-stat-val">14</div><div class="pc-stat-label">Check-Ins</div></div>
+            <div class="pc-stat"><div class="pc-stat-val">3</div><div class="pc-stat-label">Wins</div></div>
           </div>
           <div class="pc-progress">
             <div class="pc-progress-label"><span>Progress to #1</span><span>14 pts away</span></div>
             <div class="pc-progress-bar"><div class="pc-progress-fill"></div></div>
-          </div>
-          <div class="pc-sms-preview">
-            <div class="pc-sms-from">📱 Bar Rank · just now</div>
-            <div class="pc-sms-text">Jake M. just passed you for #1 at Tap House with 132 pts. You're 14 points behind. Check in tonight to take it back. Reply STOP to opt out.</div>
           </div>
         </div>
       </div>
@@ -914,24 +795,12 @@ footer p { font-size:.75rem; color:var(--muted); }
   <cite>— Cooper Mattern, Founder of Bar Rank</cite>
 </section>
 
-<!-- SMS DISCLOSURE -->
-<div class="sms-disc">
-  <div class="sms-disc-box">
-    <div class="sms-disc-icon">📱</div>
-    <div class="sms-disc-text">
-      <h3>How SMS Messaging Works</h3>
-      <p>Customers subscribe by scanning a QR code at a participating venue and voluntarily entering their phone number. Consent is obtained at opt-in before any messages are sent.</p>
-      <p>Messages include loyalty updates, rank notifications, challenge alerts, and venue promotions. Message frequency varies. Standard rates may apply. Reply <strong>STOP</strong> to unsubscribe. Reply <strong>HELP</strong> for assistance or email <a href="mailto:barrank.llc@gmail.com">barrank.llc@gmail.com</a>. Phone numbers are never sold to third parties.</p>
-    </div>
-  </div>
-</div>
-
 <!-- FINAL CTA -->
 <section class="final-cta">
   <h2>Your Bar.<br>Your <span class="gold">Leaderboard.</span></h2>
   <p>Bring Bar Rank to your venue and start turning regulars into competitors before your competition does.</p>
   <div class="cta-row">
-    <a href="mailto:barrank.llc@gmail.com" class="btn-primary">Book a Demo <span>→</span></a>
+    <a href="mailto:barrank.llc@gmail.com" class="btn-primary">Book a Demo →</a>
     <a href="about.html" class="btn-ghost">Meet the Founder</a>
   </div>
 </section>
@@ -949,44 +818,37 @@ footer p { font-size:.75rem; color:var(--muted); }
 </footer>
 
 <script>
-// Custom cursor
-const cursor = document.getElementById('cursor');
-const trail = document.getElementById('cursorTrail');
-let mx = 0, my = 0, tx = 0, ty = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top = my + 'px';
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
 });
-function animTrail() {
-  tx += (mx - tx) * 0.12;
-  ty += (my - ty) * 0.12;
-  trail.style.left = tx + 'px';
-  trail.style.top = ty + 'px';
-  requestAnimationFrame(animTrail);
+function closeMenu() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
 }
-animTrail();
-document.querySelectorAll('a,button').forEach(el => {
-  el.addEventListener('mouseenter', () => { cursor.style.width='20px'; cursor.style.height='20px'; });
-  el.addEventListener('mouseleave', () => { cursor.style.width='10px'; cursor.style.height='10px'; });
+// Close on outside click
+document.addEventListener('click', e => {
+  if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) closeMenu();
 });
 
 // Scroll reveal
 const reveals = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries) => {
-  entries.forEach((e,i) => {
-    if(e.isIntersecting) {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
       setTimeout(() => e.target.classList.add('visible'), i * 80);
       io.unobserve(e.target);
     }
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.1 });
 reveals.forEach(r => io.observe(r));
 
-// Animate leaderboard rank changes
+// Animate rank change indicators
 function animateLB() {
-  const changes = document.querySelectorAll('.lb-change, .blb-chg');
-  changes.forEach(el => {
+  document.querySelectorAll('.lb-change, .blb-chg').forEach(el => {
     el.style.transform = 'scale(1.3)';
     setTimeout(() => el.style.transform = 'scale(1)', 300);
   });
